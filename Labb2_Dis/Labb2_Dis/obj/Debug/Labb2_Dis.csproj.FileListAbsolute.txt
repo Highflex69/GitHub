@@ -84,3 +84,4 @@ C:\Users\Teddy\Documents\KTH\Termin_3_2016\Distribuerade informationssystem (HI1
 C:\Users\Teddy\Documents\KTH\Termin_3_2016\Distribuerade informationssystem (HI1031)\Labb2\Labb2_Dis\Labb2_Dis\obj\Debug\Labb2_Dis.csproj.GenerateResource.Cache
 C:\Users\Teddy\Documents\KTH\Termin_3_2016\Distribuerade informationssystem (HI1031)\Labb2\Labb2_Dis\Labb2_Dis\obj\Debug\Labb2_Dis.Migrations.AddedFieldInTable.resources
 C:\Users\Teddy\Documents\KTH\Termin_3_2016\Distribuerade informationssystem (HI1031)\Labb2\Labb2_Dis\Labb2_Dis\obj\Debug\Labb2_Dis.Migrations.ChangedTableName.resources
+C:\Users\Teddy\Documents\KTH\Termin_3_2016\Distribuerade informationssystem (HI1031)\Labb2\Labb2_Dis\Labb2_Dis\obj\Debug\Labb2_Dis.Migrations.AddingMessageTable.resources
