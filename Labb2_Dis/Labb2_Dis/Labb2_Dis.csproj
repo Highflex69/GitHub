@@ -218,11 +218,16 @@
     <Compile Include="Migrations\201610141249412_AddingMessageTable.Designer.cs">
       <DependentUpon>201610141249412_AddingMessageTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610141322461_AddedForenKeyFromMessageToUser.cs" />
+    <Compile Include="Migrations\201610141322461_AddedForenKeyFromMessageToUser.Designer.cs">
+      <DependentUpon>201610141322461_AddedForenKeyFromMessageToUser.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Message.cs" />
+    <Compile Include="Models\MessageViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -315,6 +320,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610141249412_AddingMessageTable.resx">
       <DependentUpon>201610141249412_AddingMessageTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610141322461_AddedForenKeyFromMessageToUser.resx">
+      <DependentUpon>201610141322461_AddedForenKeyFromMessageToUser.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

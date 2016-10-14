@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Labb2_Dis.Models;
+using Microsoft.AspNet.Identity;
 
 namespace Labb2_Dis.Controllers
 {
@@ -18,7 +19,9 @@ namespace Labb2_Dis.Controllers
         // GET: Messages
         public ActionResult Index()
         {
-            return View(db.Messages.ToList());
+            var currentUser = db.Users.Find(User.Identity.GetUserId());
+            return View(db.Messages.ToList().Where(
+            todo => todo.To == currentUser));
         }
 
         // GET: Messages/Details/5
@@ -47,10 +50,24 @@ namespace Labb2_Dis.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "MessageId,isRead,To,From,Date,IsRemoved")] Message message)
+        public ActionResult Create(MessageViewModel model)
         {
+          
+            Message message = new Message();
             if (ModelState.IsValid)
             {
+
+                var SendToUser = db.Users.FirstOrDefault(user => user.UserName == model.To);
+                var currentUser = db.Users.Find(User.Identity.GetUserId());
+                Console.Write("UserName: " + SendToUser.UserName);
+                message.To = SendToUser;
+                message.From = currentUser.UserName;
+                message.Title = model.Title;
+                message.Content = model.Content;
+                message.Date = DateTime.Now;
+                message.IsRemoved = false;
+                message.isRead = false;
+
                 db.Messages.Add(message);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -79,10 +96,11 @@ namespace Labb2_Dis.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "MessageId,isRead,To,From,Date,IsRemoved")] Message message)
+        public ActionResult Edit([Bind(Include = "MessageId,isRead,From,Date,IsRemoved,Content,Title")] Message message)
         {
             if (ModelState.IsValid)
             {
+                var currentUser = db.Users.Find(User.Identity.GetUserId());
                 db.Entry(message).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

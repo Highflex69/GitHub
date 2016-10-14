@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
+using System.Collections.Generic;
 
 namespace Labb2_Dis.Models
 {
@@ -13,6 +14,12 @@ namespace Labb2_Dis.Models
         public DateTime LastLogin {get; set;}
         public int NoOfLoginThisMonth {get; set;}
         public int NoOfUnreadMessages {get; set;}
+        public virtual ICollection<Message> MessageList { get; set; }
+
+        public ApplicationUser()
+        {
+            MessageList = new List<Message>();
+        }
 
     public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {

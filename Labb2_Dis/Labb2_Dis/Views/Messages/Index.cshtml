@@ -15,9 +15,6 @@
             @Html.DisplayNameFor(model => model.isRead)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.To)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.From)
         </th>
         <th>
@@ -25,6 +22,12 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.IsRemoved)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Content)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
         </th>
         <th></th>
     </tr>
@@ -35,9 +38,6 @@
             @Html.DisplayFor(modelItem => item.isRead)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.To)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.From)
         </td>
         <td>
@@ -45,6 +45,12 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.IsRemoved)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Content)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.MessageId }) |
