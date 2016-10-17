@@ -10,21 +10,12 @@
     @Html.ActionLink("Create New", "Create")
 </p>
 <table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.isRead)
-        </th>
+    <tr>     
         <th>
             @Html.DisplayNameFor(model => model.From)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Date)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IsRemoved)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Content)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Title)
@@ -35,26 +26,18 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.isRead)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.From)
+            @*@Html.DisplayFor(modelItem => item.From)*@
+            @Html.ActionLink(item.From, "MessagesFromUser", new { username = item.From })
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Date)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.IsRemoved)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Content)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Title)
+            @*@Html.DisplayFor(modelItem => item.Title)*@
+            @Html.ActionLink(item.Title, "ShowMessage", new { id = item.MessageId })
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.MessageId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.MessageId }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.MessageId })
         </td>
     </tr>
