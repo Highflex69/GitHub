@@ -22,7 +22,7 @@ namespace Labb2_Dis.Controllers
                 model.email = currentUser.Email;
                 model.lastLogin = currentUser.LastLogin;
                 model.NoOfLoginsThisMOnth = currentUser.NoOfLoginThisMonth;
-                model.NoOfUnreadMessages = 0; //måste beräknas
+                model.NoOfUnreadMessages = currentUser.NoOfUnreadMessages;
                 return View(model);
             }
             return View(model);
