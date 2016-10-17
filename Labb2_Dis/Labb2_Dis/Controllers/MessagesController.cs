@@ -21,12 +21,22 @@ namespace Labb2_Dis.Controllers
         public ActionResult Index()
         {
             var currentUser = db.Users.Find(User.Identity.GetUserId());
+
             return View(db.Messages.ToList().Where(
             todo => todo.To == currentUser));
         }
 
-        // GET: Messages/Details/5
-        public ActionResult Details(int? id)
+        // GET: Messages/MessagesFromUser/5
+        public ActionResult MessagesFromUser(string username)
+        {
+            var currentUser = db.Users.Find(User.Identity.GetUserId());
+          
+            return View(db.Messages.ToList().Where(
+            todo => todo.To == currentUser && todo.From.Equals(username)));
+        }
+
+        // GET: Messages/ShowMessage/5
+        public ActionResult ShowMessage(int? id)
         {
             if (id == null)
             {
@@ -69,7 +79,6 @@ namespace Labb2_Dis.Controllers
                 message.IsRemoved = false;
                 message.isRead = false;
 
-                
                 db.Messages.Add(message);
                 db.SaveChanges();
 
