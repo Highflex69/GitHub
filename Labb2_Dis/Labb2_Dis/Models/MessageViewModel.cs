@@ -20,6 +20,9 @@ namespace Labb2_Dis.Models
         [Required]
         [Display(Name = "Content")]
         public string Content { get; set; }
+
+        [Display(Name = "Time")]
+        public DateTime SendTime { get; set; }
     
     }
 }

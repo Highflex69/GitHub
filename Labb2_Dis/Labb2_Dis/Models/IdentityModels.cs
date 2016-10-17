@@ -14,10 +14,13 @@ namespace Labb2_Dis.Models
         public DateTime LastLogin {get; set;}
         public int NoOfLoginThisMonth {get; set;}
         public int NoOfUnreadMessages {get; set;}
+
+        public ICollection<DateTime> LoginList { get; set; }
         public virtual ICollection<Message> MessageList { get; set; }
 
         public ApplicationUser()
         {
+            LoginList = new List<DateTime>();
             MessageList = new List<Message>();
         }
 

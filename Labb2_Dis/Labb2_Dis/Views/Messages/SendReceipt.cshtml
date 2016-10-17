@@ -1,0 +1,10 @@
+﻿@model Labb2_Dis.Models.Message
+@{
+    ViewBag.Title = "SendReceipt";
+}
+
+<h2>SendReceipt</h2>
+<div>
+    Message with id @Html.DisplayFor(model => model.MessageId) has been sent to @Html.DisplayFor(model => model.To.UserName) at @Html.DisplayFor(model => model.Date)
+</div>
+

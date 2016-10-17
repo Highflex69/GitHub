@@ -25,17 +25,8 @@ namespace Labb2_Dis.Controllers
             todo => todo.To == currentUser));
         }
 
-        // GET: Messages/MessagesFromUser/5
-        public ActionResult MessagesFromUser(string username)
-        {
-            var currentUser = db.Users.Find(User.Identity.GetUserId());
-          
-            return View(db.Messages.ToList().Where(
-            todo => todo.To == currentUser && todo.From.Equals(username)));
-        }
-
-        // GET: Messages/ShowMessage/5
-        public ActionResult ShowMessage(int? id)
+        // GET: Messages/Details/5
+        public ActionResult Details(int? id)
         {
             if (id == null)
             {
@@ -78,9 +69,13 @@ namespace Labb2_Dis.Controllers
                 message.IsRemoved = false;
                 message.isRead = false;
 
+                
                 db.Messages.Add(message);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+
+                Message SentMessage = db.Messages.ToList().Where(m => m.To == SendToUser && m.From.Equals(currentUser.UserName)).LastOrDefault();
+
+                return View("SendReceipt", SentMessage);
             }
 
             return View(message);
