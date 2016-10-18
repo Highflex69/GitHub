@@ -34,7 +34,10 @@ namespace Labb2_Dis.Models
 
         [Display(Name = "IsRemoved")]
         public bool IsRemoved { get; set; }
-        
+
+        [Display(Name = "IsChecked")]
+        public bool IsChecked { get; set; }
+
         public MessageViewModel()
         {
 
@@ -50,6 +53,7 @@ namespace Labb2_Dis.Models
             this.IsRemoved = isRemoved;
             this.Content = content;
             this.Title = title;
+
         }
 
         public static IEnumerable<MessageViewModel> GetMessageViewModelList(IEnumerable<Message> list)
@@ -62,6 +66,6 @@ namespace Labb2_Dis.Models
             }
 
             return NewList;
-        }
+        } 
     }
 }

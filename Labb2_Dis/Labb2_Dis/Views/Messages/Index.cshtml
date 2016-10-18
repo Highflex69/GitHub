@@ -5,46 +5,60 @@
 }
 
 <h2>Index</h2>
+@using (Html.BeginForm())
+{
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>     
-        <th>
-            @Html.DisplayNameFor(model => model.From)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Date)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Title)
-        </th>
-        <th></th>
-    </tr>
+    @Html.AntiForgeryToken()
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @*@Html.DisplayFor(modelItem => item.From)*@
-            @Html.ActionLink(item.From, "MessagesFromUser", new { username = item.From })
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Date)
-        </td>
-        <td>
-            @*@Html.DisplayFor(modelItem => item.Title)*@
-            @Html.ActionLink(item.Title, "ShowMessage", new { id = item.Id })
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-        </td>
-    </tr>
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <table class="table">
+        <tr>     
+            <th>
+                @Html.DisplayNameFor(model => model.From)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th></th>
+        </tr>
+
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @*@Html.DisplayFor(modelItem => item.From)*@
+                @Html.ActionLink(item.From, "MessagesFromUser", new { username = item.From })
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+               @if(item.isRead)
+                {
+                    @Html.ActionLink(item.Title, "ShowMessage", new { id = item.Id })
+               }
+               else
+               {
+                   <b>@Html.ActionLink(item.Title, "ShowMessage", new { id = item.Id })</b>
+               }
+
+                @Html.CheckBoxFor(model => item.IsChecked)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
+    </table>
+    <div>
+        <input type="submit" value="Create" class="btn btn-default" />
+    </div>
 }
-
-</table>
-
 <div>
     @{int readMessages = 0;
         int removedMessages = 0;

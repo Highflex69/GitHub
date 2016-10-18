@@ -21,9 +21,23 @@ namespace Labb2_Dis.Controllers
         public ActionResult Index()
         {
             var currentUser = db.Users.Find(User.Identity.GetUserId());
-
+            Debug.WriteLine("in Index GET");
             return View(MessageViewModel.GetMessageViewModelList(db.Messages.ToList().Where(
             todo => todo.To == currentUser)));
+        }
+
+        // POST: Messages
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Index(IEnumerable<MessageViewModel> model)
+        {
+            foreach(var item in model)
+            {
+                Debug.WriteLine("In Index POST" + item.Title);
+            }
+            
+
+            return View(model);
         }
 
         // GET: Messages/MessagesFromUser/5
@@ -42,7 +56,10 @@ namespace Labb2_Dis.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Message message = db.Messages.Find(id);
+            message.isRead = true;
+            db.SaveChanges();
             if (message == null)
             {
                 return HttpNotFound();
@@ -53,7 +70,8 @@ namespace Labb2_Dis.Controllers
         // GET: Messages/Create
         public ActionResult Create()
         {
-            return View();
+            UserListAndMessageViewModel UserListAndMessage = new UserListAndMessageViewModel(UserViewModel.GetAllUserViewModelList(db.Users.ToList()), new MessageViewModel(-1, false, "", "", DateTime.Now, false, "", ""));
+            return View(UserListAndMessage);
         }
 
         // POST: Messages/Create
@@ -61,20 +79,20 @@ namespace Labb2_Dis.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "To, Title, Content")] MessageViewModel model)
-        {
-          
+        public ActionResult Create(UserListAndMessageViewModel model)
+        {   
+            
             Message message = new Message();
             if (ModelState.IsValid)
             {
-
-                var SendToUser = db.Users.FirstOrDefault(user => user.UserName == model.To);
+                Debug.WriteLine(model.Message.Content);
+                var SendToUser = db.Users.FirstOrDefault(user => user.UserName == model.Message.To);
                 var currentUser = db.Users.Find(User.Identity.GetUserId());
                 Console.Write("UserName: " + SendToUser.UserName);
                 message.To = SendToUser;
                 message.From = currentUser.UserName;
-                message.Title = model.Title;
-                message.Content = model.Content;
+                message.Title = model.Message.Title;
+                message.Content = model.Message.Content;
                 message.Date = DateTime.Now;
                 message.IsRemoved = false;
                 message.isRead = false;

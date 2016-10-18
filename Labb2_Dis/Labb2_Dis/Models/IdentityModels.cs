@@ -28,6 +28,12 @@ namespace Labb2_Dis.Models
             // Add custom user claims here
             return userIdentity;
         }
+
+        public UserViewModel getUserViewModel()
+        {
+            return new UserViewModel(this.UserName, this.Email, this.LastLogin, this.NoOfLoginThisMonth, this.NoOfUnreadMessages);
+        }
+
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
