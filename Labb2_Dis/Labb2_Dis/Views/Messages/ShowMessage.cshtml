@@ -1,4 +1,4 @@
-﻿@model Labb2_Dis.Models.Message
+﻿@model Labb2_Dis.Models.MessageViewModel
 
 @{
     ViewBag.Title = "ShowMessage";
@@ -45,6 +45,6 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.MessageId }) |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>

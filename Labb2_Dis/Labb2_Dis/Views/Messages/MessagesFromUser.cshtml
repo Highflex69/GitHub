@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Labb2_Dis.Models.Message>
+﻿@model IEnumerable<Labb2_Dis.Models.MessageViewModel>
 
 @{
     ViewBag.Title = "MessagesFromUser";
@@ -31,8 +31,8 @@
             @Html.DisplayFor(modelItem => item.Title)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.MessageId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.MessageId })
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
         </td>
     </tr>
 }

@@ -22,17 +22,17 @@ namespace Labb2_Dis.Controllers
         {
             var currentUser = db.Users.Find(User.Identity.GetUserId());
 
-            return View(db.Messages.ToList().Where(
-            todo => todo.To == currentUser));
+            return View(MessageViewModel.GetMessageViewModelList(db.Messages.ToList().Where(
+            todo => todo.To == currentUser)));
         }
 
         // GET: Messages/MessagesFromUser/5
         public ActionResult MessagesFromUser(string username)
         {
             var currentUser = db.Users.Find(User.Identity.GetUserId());
-          
-            return View(db.Messages.ToList().Where(
-            todo => todo.To == currentUser && todo.From.Equals(username)));
+             
+            return View(MessageViewModel.GetMessageViewModelList(db.Messages.ToList().Where(
+            todo => todo.To == currentUser && todo.From.Equals(username))));
         }
 
         // GET: Messages/ShowMessage/5
@@ -47,7 +47,7 @@ namespace Labb2_Dis.Controllers
             {
                 return HttpNotFound();
             }
-            return View(message);
+            return View(message.GetViewModel());
         }
 
         // GET: Messages/Create
@@ -61,7 +61,7 @@ namespace Labb2_Dis.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(MessageViewModel model)
+        public ActionResult Create([Bind(Include = "To, Title, Content")] MessageViewModel model)
         {
           
             Message message = new Message();
@@ -83,8 +83,8 @@ namespace Labb2_Dis.Controllers
                 db.SaveChanges();
 
                 Message SentMessage = db.Messages.ToList().Where(m => m.To == SendToUser && m.From.Equals(currentUser.UserName)).LastOrDefault();
-
-                return View("SendReceipt", SentMessage);
+               
+                return View("SendReceipt", SentMessage.GetViewModel());
             }
 
             return View(message);

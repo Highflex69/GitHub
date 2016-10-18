@@ -18,5 +18,10 @@ namespace Labb2_Dis.Models
         public bool IsRemoved { get; set; }
         public string Content { get; set; }
         public string Title { get; set; }
+
+        public MessageViewModel GetViewModel()
+        {
+            return new MessageViewModel(this.MessageId, this.isRead, this.To.UserName, this.From, this.Date, this.IsRemoved, this.Content, this.Title);
+        }
     }
 }
