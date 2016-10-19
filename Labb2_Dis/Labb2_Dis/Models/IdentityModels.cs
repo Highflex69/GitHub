@@ -12,6 +12,7 @@ namespace Labb2_Dis.Models
     public class ApplicationUser : IdentityUser
     {
         public DateTime LastLogin {get; set;}
+        public DateTime LastLoginReset { get; set; }
         public int NoOfLoginThisMonth {get; set;}
         public int NoOfUnreadMessages {get; set;}
         public virtual ICollection<Message> MessageList { get; set; }

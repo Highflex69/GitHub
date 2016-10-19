@@ -18,6 +18,7 @@ namespace Labb2_Dis.Controllers
             if(ModelState.IsValid)
             {
                 var currentUser = db.Users.Find(User.Identity.GetUserId());
+               
                 model.Username = currentUser.UserName;
                 model.email = currentUser.Email;
                 model.lastLogin = currentUser.LastLogin;

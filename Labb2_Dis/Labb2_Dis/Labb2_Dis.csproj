@@ -222,12 +222,17 @@
     <Compile Include="Migrations\201610141322461_AddedForenKeyFromMessageToUser.Designer.cs">
       <DependentUpon>201610141322461_AddedForenKeyFromMessageToUser.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610191127429_AddingLastLoginResetAttribut.cs" />
+    <Compile Include="Migrations\201610191127429_AddingLastLoginResetAttribut.Designer.cs">
+      <DependentUpon>201610191127429_AddingLastLoginResetAttribut.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\HomeViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Message.cs" />
+    <Compile Include="Models\MessageListViewModel.cs" />
     <Compile Include="Models\MessageViewModel.cs" />
     <Compile Include="Models\UserListAndMessageViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -291,9 +296,7 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Messages\Create.cshtml" />
-    <Content Include="Views\Messages\Delete.cshtml" />
     <Content Include="Views\Messages\ShowMessage.cshtml" />
-    <Content Include="Views\Messages\Edit.cshtml" />
     <Content Include="Views\Messages\Index.cshtml" />
     <Content Include="Views\Messages\MessagesFromUser.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
@@ -325,6 +328,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610141322461_AddedForenKeyFromMessageToUser.resx">
       <DependentUpon>201610141322461_AddedForenKeyFromMessageToUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610191127429_AddingLastLoginResetAttribut.resx">
+      <DependentUpon>201610191127429_AddingLastLoginResetAttribut.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -79,6 +79,17 @@ namespace Labb2_Dis.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
+                    ApplicationDbContext db = new ApplicationDbContext();
+                    var currentUser = db.Users.FirstOrDefault(user => user.UserName == model.Username);
+                    DateTime Date = DateTime.Now;
+                    currentUser.LastLogin = Date;
+                    if(currentUser.LastLoginReset.Year != Date.Year || currentUser.LastLoginReset.Month != Date.Month)
+                    {
+                        currentUser.NoOfLoginThisMonth = 0;
+                        currentUser.LastLoginReset = Date;
+                    }
+                    currentUser.NoOfLoginThisMonth++;
+                    db.SaveChanges();
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -101,6 +112,7 @@ namespace Labb2_Dis.Controllers
             {
                 return View("Error");
             }
+            
             return View(new VerifyCodeViewModel { Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe });
         }
 

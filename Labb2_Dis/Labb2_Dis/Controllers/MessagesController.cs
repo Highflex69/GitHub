@@ -22,22 +22,38 @@ namespace Labb2_Dis.Controllers
         {
             var currentUser = db.Users.Find(User.Identity.GetUserId());
             Debug.WriteLine("in Index GET");
-            return View(MessageViewModel.GetMessageViewModelList(db.Messages.ToList().Where(
+                        return View(MessageViewModel.GetMessageViewModelList(db.Messages.ToList().Where(
             todo => todo.To == currentUser)));
         }
 
         // POST: Messages
-        [HttpPost]
+        [HttpPost, ActionName("MarkAsRead")]
         [ValidateAntiForgeryToken]
-        public ActionResult Index(IEnumerable<MessageViewModel> model)
+        public ActionResult MarkAsRead(string[] checkbox)
         {
-            foreach(var item in model)
+            if (checkbox == null)
             {
-                Debug.WriteLine("In Index POST" + item.Title);
+ 
             }
-            
-
-            return View(model);
+            else
+            {
+                ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
+                foreach (var item in checkbox)
+                {
+                    int Nr = -1;
+                    if (Int32.TryParse(item, out Nr))
+                    {
+                        Message m = db.Messages.Find(Nr);
+                        if (m.To.Id.Equals(User.Identity.GetUserId()))
+                        {
+                            m.isRead = true;
+                            currentUser.NoOfUnreadMessages--;
+                        }
+                    }
+                }
+                db.SaveChanges();
+            }
+            return RedirectToAction("Index");
         }
 
         // GET: Messages/MessagesFromUser/5
@@ -59,6 +75,8 @@ namespace Labb2_Dis.Controllers
 
             Message message = db.Messages.Find(id);
             message.isRead = true;
+            ApplicationUser CurrentUser = db.Users.Find(User.Identity.GetUserId());
+            CurrentUser.NoOfUnreadMessages--;
             db.SaveChanges();
             if (message == null)
             {
@@ -96,46 +114,13 @@ namespace Labb2_Dis.Controllers
                 message.Date = DateTime.Now;
                 message.IsRemoved = false;
                 message.isRead = false;
-
+                SendToUser.NoOfUnreadMessages++;
                 db.Messages.Add(message);
                 db.SaveChanges();
 
                 Message SentMessage = db.Messages.ToList().Where(m => m.To == SendToUser && m.From.Equals(currentUser.UserName)).LastOrDefault();
                
                 return View("SendReceipt", SentMessage.GetViewModel());
-            }
-
-            return View(message);
-        }
-
-        // GET: Messages/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Message message = db.Messages.Find(id);
-            if (message == null)
-            {
-                return HttpNotFound();
-            }
-            return View(message);
-        }
-
-        // POST: Messages/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "MessageId,isRead,From,Date,IsRemoved,Content,Title")] Message message)
-        {
-            if (ModelState.IsValid)
-            {
-                var currentUser = db.Users.Find(User.Identity.GetUserId());
-                db.Entry(message).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
             }
             return View(message);
         }
@@ -152,17 +137,14 @@ namespace Labb2_Dis.Controllers
             {
                 return HttpNotFound();
             }
-            return View(message);
-        }
-
-        // POST: Messages/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Message message = db.Messages.Find(id);
-            db.Messages.Remove(message);
-            db.SaveChanges();
+            if(message.To.Id.Equals(User.Identity.GetUserId()))
+            {
+                message.IsRemoved = true;
+                ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
+                message.isRead = true;
+                currentUser.NoOfUnreadMessages--;
+                db.SaveChanges();
+            }
             return RedirectToAction("Index");
         }
 
