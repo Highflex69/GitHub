@@ -5,18 +5,23 @@
 
 <h2>Send</h2>
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
         <h4>MessageViewModel</h4>
         <hr />
+        
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            To:
+            @Html.LabelFor(model => model.Message.To, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DisplayNameFor(model => model.Group.GroupName)
+                @Html.HiddenFor(model => model.Group.GroupName, Model.Group.GroupName)
+                @Html.HiddenFor(model => model.Group.GroupId, Model.Group.GroupId)           
+            </div>
         </div>
-
         <div class="form-group">
             @Html.LabelFor(model => model.Message.Title, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">

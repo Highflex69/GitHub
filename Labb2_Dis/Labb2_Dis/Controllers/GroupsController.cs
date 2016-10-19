@@ -64,7 +64,7 @@ namespace Labb2_Dis.Controllers
         }
 
 
-        // POST: Groups/Create
+        // POST: Groups/Send
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -73,12 +73,12 @@ namespace Labb2_Dis.Controllers
         {
             Debug.WriteLine(ModelState.IsValid);
             Debug.WriteLine(model.Group.GroupName);
-            Message msg = new Message();
+            
             if (ModelState.IsValid)
             {
                 ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
                 Group Currentgroup = db.Groups.Find(model.Group.GroupId);
-                
+                Message msg = new Message();
                 msg.From = currentUser.UserName;
                 msg.Content = model.Message.Content;
                 msg.Title = model.Message.Title;
@@ -87,14 +87,15 @@ namespace Labb2_Dis.Controllers
                 {
                     if(Currentgroup.MemberList.ElementAt(i).UserName != currentUser.UserName)
                     {
-                        msg.To = Currentgroup.MemberList.ElementAt(i); 
+                        msg.To = Currentgroup.MemberList.ElementAt(i);
+                        Currentgroup.MemberList.ElementAt(i).NoOfUnreadMessages++;
                         db.Messages.Add(msg);
                     }
                 }
                 db.SaveChanges();
-                return View("Index");
+                return RedirectToAction("Index");
             }
-            return View(msg);
+            return View();
         }
 
         // GET: Groups/Join/5

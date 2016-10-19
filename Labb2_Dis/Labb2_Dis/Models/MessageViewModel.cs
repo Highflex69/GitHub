@@ -11,7 +11,6 @@ namespace Labb2_Dis.Models
         [Display(Name = "Id")]
         public int Id { get; set; }
 
-        [Required]
         [Display(Name = "To")]
         public string To { get; set; }
 
@@ -48,6 +47,7 @@ namespace Labb2_Dis.Models
             this.IsRemoved = false;
             this.Content = "";
             this.Title = "";
+            this.IsChecked = false;
         }
 
         public MessageViewModel(int id, bool isRead, string to, string from, DateTime Date, bool isRemoved, string content, string title)
