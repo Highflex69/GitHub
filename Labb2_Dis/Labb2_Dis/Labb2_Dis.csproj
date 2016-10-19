@@ -196,6 +196,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\GroupsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MessagesController.cs" />
@@ -226,8 +227,16 @@
     <Compile Include="Migrations\201610191127429_AddingLastLoginResetAttribut.Designer.cs">
       <DependentUpon>201610191127429_AddingLastLoginResetAttribut.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610191541535_AddingGroupTable.cs" />
+    <Compile Include="Migrations\201610191541535_AddingGroupTable.Designer.cs">
+      <DependentUpon>201610191541535_AddingGroupTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Group.cs" />
+    <Compile Include="Models\GroupAndMessageViewModel.cs" />
+    <Compile Include="Models\GroupListViewModel.cs" />
+    <Compile Include="Models\GroupViewModel.cs" />
     <Compile Include="Models\HomeViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -301,6 +310,12 @@
     <Content Include="Views\Messages\MessagesFromUser.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Messages\SendReceipt.cshtml" />
+    <Content Include="Views\Groups\Create.cshtml" />
+    <Content Include="Views\Groups\Delete.cshtml" />
+    <Content Include="Views\Groups\Details.cshtml" />
+    <Content Include="Views\Groups\Edit.cshtml" />
+    <Content Include="Views\Groups\Index.cshtml" />
+    <Content Include="Views\Groups\Send.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -331,6 +346,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610191127429_AddingLastLoginResetAttribut.resx">
       <DependentUpon>201610191127429_AddingLastLoginResetAttribut.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610191541535_AddingGroupTable.resx">
+      <DependentUpon>201610191541535_AddingGroupTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

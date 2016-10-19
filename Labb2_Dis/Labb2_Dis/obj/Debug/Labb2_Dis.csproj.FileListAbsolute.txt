@@ -87,3 +87,4 @@ C:\Users\Teddy\Documents\KTH\Termin_3_2016\Distribuerade informationssystem (HI1
 C:\Users\Teddy\Documents\KTH\Termin_3_2016\Distribuerade informationssystem (HI1031)\Labb2\Labb2_Dis\Labb2_Dis\obj\Debug\Labb2_Dis.Migrations.AddingMessageTable.resources
 C:\Users\Teddy\Documents\KTH\Termin_3_2016\Distribuerade informationssystem (HI1031)\Labb2\Labb2_Dis\Labb2_Dis\obj\Debug\Labb2_Dis.Migrations.AddedForenKeyFromMessageToUser.resources
 C:\Users\Teddy\Documents\KTH\Termin_3_2016\Distribuerade informationssystem (HI1031)\Labb2\Labb2_Dis\Labb2_Dis\obj\Debug\Labb2_Dis.Migrations.AddingLastLoginResetAttribut.resources
+C:\Users\Teddy\Documents\KTH\Termin_3_2016\Distribuerade informationssystem (HI1031)\Labb2\Labb2_Dis\Labb2_Dis\obj\Debug\Labb2_Dis.Migrations.AddingGroupTable.resources

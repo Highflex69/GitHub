@@ -163,7 +163,7 @@ namespace Labb2_Dis.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Username, Email = model.Email, LastLogin = DateTime.Now};
+                var user = new ApplicationUser { UserName = model.Username, Email = model.Email, LastLogin = DateTime.Now, LastLoginReset = DateTime.Now};
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

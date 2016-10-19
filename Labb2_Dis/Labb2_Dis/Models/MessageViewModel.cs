@@ -40,7 +40,14 @@ namespace Labb2_Dis.Models
 
         public MessageViewModel()
         {
-
+            this.Id = -1; ;
+            this.isRead = false;
+            this.To = "";
+            this.From = "";
+            this.Date = DateTime.Now;
+            this.IsRemoved = false;
+            this.Content = "";
+            this.Title = "";
         }
 
         public MessageViewModel(int id, bool isRead, string to, string from, DateTime Date, bool isRemoved, string content, string title)

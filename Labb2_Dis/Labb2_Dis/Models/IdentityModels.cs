@@ -16,10 +16,11 @@ namespace Labb2_Dis.Models
         public int NoOfLoginThisMonth {get; set;}
         public int NoOfUnreadMessages {get; set;}
         public virtual ICollection<Message> MessageList { get; set; }
-
+        public virtual ICollection<Group> GroupList { get; set; }
         public ApplicationUser()
         {
             MessageList = new List<Message>();
+            GroupList = new List<Group>();
         }
 
     public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
@@ -45,6 +46,7 @@ namespace Labb2_Dis.Models
         }
 
         public DbSet<Message> Messages { get; set; }
+        public DbSet<Group> Groups { get; set; }
 
         public static ApplicationDbContext Create()
         {
@@ -56,5 +58,6 @@ namespace Labb2_Dis.Models
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<ApplicationUser>().ToTable("User").Property(p => p.Id).HasColumnName("UserId");
         }
+        
     }
 }

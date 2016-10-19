@@ -1,0 +1,46 @@
+﻿@model Labb2_Dis.Models.GroupListViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            <h4>Group</h4>
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model.JoinedGroup) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.GroupName)
+        </td>
+        <td>
+            @Html.ActionLink("Send", "Send", new { id=item.GroupId }) |          
+            @Html.ActionLink("Leave", "Details", new { id=item.GroupId })
+        </td>
+    </tr>
+}
+
+@foreach (var item in Model.AvailableGroup)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.GroupName)
+            </td>
+            <td>
+                
+                @Html.ActionLink("Join", "Join", new { id = item.GroupId })
+            </td>
+        </tr>
+    }
+
+
+</table>
