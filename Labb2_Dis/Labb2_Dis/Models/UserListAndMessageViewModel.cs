@@ -10,12 +10,14 @@ namespace Labb2_Dis.Models
     {
         public IEnumerable<SelectListItem> UserList { get; set; }
         public MessageViewModel Message { get; set; }
+        public string[] SelectedUserList { get; set; }
 
         public UserListAndMessageViewModel() { }
         public UserListAndMessageViewModel(List<UserViewModel> userList, MessageViewModel message)
         {
             this.UserList = GetAllItemToList(userList);
             this.Message = message;
+            this.SelectedUserList = null;
         }
 
         public List<SelectListItem> GetAllItemToList(List<UserViewModel> userList)

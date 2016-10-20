@@ -1,10 +1,14 @@
-﻿@model Labb2_Dis.Models.MessageViewModel
+﻿@model IEnumerable<Labb2_Dis.Models.MessageViewModel>
 @{
     ViewBag.Title = "SendReceipt";
 }
 
 <h2>SendReceipt</h2>
-<div>
-    Message with id @Html.DisplayFor(model => model.Id) has been sent to @Html.DisplayFor(model => model.To) at @Html.DisplayFor(model => model.Date)
-</div>
+@foreach (var item in Model)
+{
+    <div>
+        Message with id @Html.DisplayFor(model => item.Id) has been sent to @Html.DisplayFor(model => item.To) at @Html.DisplayFor(model => item.Date)
+    </div>
+}
+
 

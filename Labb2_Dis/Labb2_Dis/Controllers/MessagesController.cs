@@ -104,25 +104,31 @@ namespace Labb2_Dis.Controllers
             if (ModelState.IsValid)
             {
                 Debug.WriteLine(model.Message.Content);
-                var SendToUser = db.Users.FirstOrDefault(user => user.UserName == model.Message.To);
                 var currentUser = db.Users.Find(User.Identity.GetUserId());
-                Console.Write("UserName: " + SendToUser.UserName);
-                message.To = SendToUser;
-                message.From = currentUser.UserName;
-                message.Title = model.Message.Title;
-                message.Content = model.Message.Content;
-                message.Date = DateTime.Now;
-                message.IsRemoved = false;
-                message.isRead = false;
-                SendToUser.NoOfUnreadMessages++;
-                db.Messages.Add(message);
-                db.SaveChanges();
-
-                Message SentMessage = db.Messages.ToList().Where(m => m.To == SendToUser && m.From.Equals(currentUser.UserName)).LastOrDefault();
+                List<Message> sentMessageList = new List<Message>();
+                foreach(var item in model.SelectedUserList)
+                {
+                    var SendToUser = db.Users.FirstOrDefault(user => user.UserName == item);
+                    message.To = SendToUser;
+                    message.From = currentUser.UserName;
+                    message.Title = model.Message.Title;
+                    message.Content = model.Message.Content;
+                    SendToUser.NoOfUnreadMessages++;
+                    db.Messages.Add(message);
+                    db.SaveChanges();            
+                }              
                
-                return View("SendReceipt", SentMessage.GetViewModel());
+                foreach(var item in model.SelectedUserList)
+                {
+                    var SendToUser = db.Users.FirstOrDefault(user => user.UserName == item);
+                    Message tmp = db.Messages.ToList().Where(m => m.To == SendToUser && m.From.Equals(currentUser.UserName)).LastOrDefault();
+                    Debug.WriteLine("username: " + tmp.To.UserName);
+                    sentMessageList.Add(tmp);
+                }
+                
+                return View("SendReceipt", MessageViewModel.GetMessageViewModelList(sentMessageList));
             }
-            return View(message);
+            return HttpNotFound();
         }
 
         // GET: Messages/Delete/5
