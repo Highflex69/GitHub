@@ -23,7 +23,7 @@ namespace Labb2_Dis.Controllers
             //Lazy loading
             ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
 
-            //Explicit load Memeberlist in groups - Whole list is beign used
+            //Eager load Memeberlist in groups - Whole list is beign used
             List<Group> JList = db.Groups.Include(m => m.MemberList).ToList().Intersect(db.Groups.ToList().Where(group => group.MemberList.Any(user => user.Id == currentUser.Id))).ToList();
             List<Group> AList = db.Groups.ToList().Except(JList).ToList();
             Debug.WriteLine(AList.Count);
@@ -222,6 +222,38 @@ namespace Labb2_Dis.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        //GET: Groups/Leave/3
+        public ActionResult Leave(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            //Explicit loading
+            string Uid = User.Identity.GetUserId();
+            ApplicationUser currentUser = db.Users.Include(m => m.GroupList).First(u => u.Id == Uid);
+            
+
+            //Find group with id - Eager loading memberlist since it will be iterated
+            Group group = db.Groups.Include(g => g.MemberList).FirstOrDefault(h => h.GroupId == id);
+
+            //Iterate all groups from groups that user is member of
+            foreach(var g in currentUser.GroupList)
+            {
+                //Match and remove user from database
+                if(group.GroupId == id)
+                {
+                    currentUser.GroupList.Remove(group);
+                    group.MemberList.Remove(currentUser);                                                     
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+            }
+
+            //If user is not part of group with id
+            return HttpNotFound();
         }
     }
 }
