@@ -20,10 +20,19 @@ namespace Labb2_Dis.Controllers
         // GET: Messages
         public ActionResult Index()
         {
+            //Lazyload user
             var currentUser = db.Users.Find(User.Identity.GetUserId());
             Debug.WriteLine("in Index GET");
-                        return View(MessageViewModel.GetMessageViewModelList(db.Messages.ToList().Where(
-            todo => todo.To == currentUser)));
+
+            //Explicit load user messages
+            db.Messages.Where(m => m.To.Id == currentUser.Id).Load();
+
+            var UserMessageList = currentUser.MessageList;
+            var dbList = UserMessageList;
+
+            IEnumerable<MessageViewModel> list = MessageViewModel.GetMessageViewModelList(dbList);
+
+            return View(list);
         }
 
         // POST: Messages
@@ -37,7 +46,9 @@ namespace Labb2_Dis.Controllers
             }
             else
             {
+                //Lazy load used for user and messages - few rows affected
                 ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
+
                 foreach (var item in checkbox)
                 {
                     int Nr = -1;
@@ -59,10 +70,13 @@ namespace Labb2_Dis.Controllers
         // GET: Messages/MessagesFromUser/5
         public ActionResult MessagesFromUser(string username)
         {
+            //Lazy load user
             var currentUser = db.Users.Find(User.Identity.GetUserId());
-             
-            return View(MessageViewModel.GetMessageViewModelList(db.Messages.ToList().Where(
-            todo => todo.To == currentUser && todo.From.Equals(username))));
+
+            //Eager loading is used including To - All messages from a certain user is
+            var MessageList = db.Messages.Include(m => m.To).ToList().Where(todo => todo.To == currentUser && todo.From.Equals(username));
+
+            return View(MessageViewModel.GetMessageViewModelList(MessageList));
         }
 
         // GET: Messages/ShowMessage/5
@@ -73,21 +87,33 @@ namespace Labb2_Dis.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Message message = db.Messages.Find(id);
-            message.isRead = true;
+            //Lazy loading user
             ApplicationUser CurrentUser = db.Users.Find(User.Identity.GetUserId());
-            CurrentUser.NoOfUnreadMessages--;
-            db.SaveChanges();
-            if (message == null)
+            //Explicit load messages in user - list is going to be iterated
+            db.Messages.Where(m => m.To.Id == CurrentUser.Id).Load();
+
+
+            Message message = db.Messages.Find(id);
+
+            foreach(var m in CurrentUser.MessageList)
             {
-                return HttpNotFound();
+                if(m.MessageId == id)
+                {
+                    m.isRead = true;
+                    CurrentUser.NoOfUnreadMessages--;
+                    db.SaveChanges();
+                    return View(m.GetViewModel());
+                }
             }
-            return View(message.GetViewModel());
+
+
+            return HttpNotFound();
         }
 
         // GET: Messages/Create
         public ActionResult Create()
         {
+            //Eager loading is used - Displaying all available users
             UserListAndMessageViewModel UserListAndMessage = new UserListAndMessageViewModel(UserViewModel.GetAllUserViewModelList(db.Users.ToList()), new MessageViewModel(-1, false, "", "", DateTime.Now, false, "", ""));
             return View(UserListAndMessage);
         }
@@ -104,10 +130,13 @@ namespace Labb2_Dis.Controllers
             if (ModelState.IsValid)
             {
                 Debug.WriteLine(model.Message.Content);
+                //Lazy loading user
                 var currentUser = db.Users.Find(User.Identity.GetUserId());
+
                 List<Message> sentMessageList = new List<Message>();
                 foreach(var item in model.SelectedUserList)
                 {
+                    //Lazy loading - No navigation properties is used
                     var SendToUser = db.Users.FirstOrDefault(user => user.UserName == item);
                     message.To = SendToUser;
                     message.From = currentUser.UserName;
@@ -121,7 +150,8 @@ namespace Labb2_Dis.Controllers
                 foreach(var item in model.SelectedUserList)
                 {
                     var SendToUser = db.Users.FirstOrDefault(user => user.UserName == item);
-                    Message tmp = db.Messages.ToList().Where(m => m.To == SendToUser && m.From.Equals(currentUser.UserName)).LastOrDefault();
+                    //Eager loading message - To field is navigation property
+                    Message tmp = db.Messages.Include(m => m.To).ToList().Where(m => m.To == SendToUser && m.From.Equals(currentUser.UserName)).LastOrDefault();
                     Debug.WriteLine("username: " + tmp.To.UserName);
                     sentMessageList.Add(tmp);
                 }
@@ -138,6 +168,7 @@ namespace Labb2_Dis.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            //Lazy loading used, only one row in Message table is used
             Message message = db.Messages.Find(id);
             if (message == null)
             {
@@ -146,6 +177,7 @@ namespace Labb2_Dis.Controllers
             if(message.To.Id.Equals(User.Identity.GetUserId()))
             {
                 message.IsRemoved = true;
+                //Lazy loading user - No navigation properties is used
                 ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
                 message.isRead = true;
                 currentUser.NoOfUnreadMessages--;

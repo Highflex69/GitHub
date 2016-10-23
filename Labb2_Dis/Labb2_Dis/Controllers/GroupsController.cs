@@ -20,9 +20,11 @@ namespace Labb2_Dis.Controllers
         // GET: Groups
         public ActionResult Index()
         {
+            //Lazy loading
             ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
 
-            List<Group> JList = db.Groups.ToList().Intersect(db.Groups.ToList().Where(group => group.MemberList.Any(user => user.Id == currentUser.Id))).ToList();
+            //Explicit load Memeberlist in groups - Whole list is beign used
+            List<Group> JList = db.Groups.Include(m => m.MemberList).ToList().Intersect(db.Groups.ToList().Where(group => group.MemberList.Any(user => user.Id == currentUser.Id))).ToList();
             List<Group> AList = db.Groups.ToList().Except(JList).ToList();
             Debug.WriteLine(AList.Count);
             Debug.WriteLine(JList.Count);
@@ -57,7 +59,9 @@ namespace Labb2_Dis.Controllers
             {
                 return HttpNotFound();
             }
+            //Lazy load - No navigation properties are beign used
             List<ApplicationUser> UserList = group.MemberList.ToList();
+
             GroupAndMessageViewModel groupAndMessage = new GroupAndMessageViewModel(new GroupViewModel(group.GroupId, group.GroupName));
             Debug.WriteLine(groupAndMessage.Group.GroupName);
             return View(groupAndMessage);
@@ -76,8 +80,11 @@ namespace Labb2_Dis.Controllers
             
             if (ModelState.IsValid)
             {
+                //Lazy loading user - No navigation properties is used
                 ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
+                //Lazy loading group - A single navigation property is used
                 Group Currentgroup = db.Groups.Find(model.Group.GroupId);
+                
                 Message msg = new Message();
                 msg.From = currentUser.UserName;
                 msg.Content = model.Message.Content;
@@ -105,13 +112,18 @@ namespace Labb2_Dis.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            //Lazy load
             Group group = db.Groups.Find(id);
+            //Explicit load group - Navigation property is used belowe
+            db.Groups.Where(m => m.GroupId == id).Load();
             if (group == null)
             {
                 return HttpNotFound();
             }
+            //Lazy loading user - Not using navigation properties
             ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
-            if(!group.MemberList.Contains(currentUser))
+
+            if (!group.MemberList.Contains(currentUser))
             {
                 group.MemberList.Add(currentUser);
                 db.SaveChanges();
@@ -135,6 +147,7 @@ namespace Labb2_Dis.Controllers
         {
             if (ModelState.IsValid)
             {
+                //Lazy load user - No navigation properties is used
                 ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
                 Debug.WriteLine(currentUser.UserName);
                 group.MemberList.Add(currentUser);
